@@ -1,8 +1,8 @@
 'use client';
 
-import { Todo } from '@/generated/prisma';
 import { TodoEssentials, TUserTodoList } from '@/lib/types';
 import { createTodo, deleteTodo, editTodo } from '@/server/actions';
+import { Todo } from '@prisma/client';
 
 import { createContext, useContext, useOptimistic, useState } from 'react';
 import { toast } from 'sonner';

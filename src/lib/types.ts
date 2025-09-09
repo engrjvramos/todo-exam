@@ -1,5 +1,5 @@
-import { Todo } from '@/generated/prisma';
 import { getTodoList } from '@/server/actions';
+import { Todo } from '@prisma/client';
 
 export type ApiResponse = {
   success: boolean;
