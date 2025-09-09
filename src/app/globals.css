@@ -10,10 +10,10 @@
   --color-custom-400: #b6a08b;
   --color-custom-500: #9d8065;
   --color-custom-600: #d4d8e5;
-  --color-custom-600: #0a1f56;
-  --color-custom-600: #555555;
-  --color-custom-600: #d4d8e5;
-  --color-custom-600: #333333;
+  --color-custom-700: #0a1f56;
+  --color-custom-800: #555555;
+  --color-custom-900: #d4d8e5;
+  --color-custom-1000: #333333;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
