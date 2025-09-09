@@ -106,12 +106,13 @@ export async function editTodo(
       return { success: false, message: 'Invalid form data' };
     }
 
-    const { todo } = validation.data;
+    const { todo, isComplete } = validation.data;
 
     await prisma.todo.update({
       where: { id: todoId },
       data: {
         todo,
+        isComplete,
       },
     });
 

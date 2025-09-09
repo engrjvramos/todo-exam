@@ -29,6 +29,7 @@ export const todoSchema = z.object({
   todo: z.string().max(250, {
     message: 'Todo must be at most 250 characters long',
   }),
+  isComplete: z.boolean().default(false).nonoptional(),
 });
 
 export type TTodoSchema = z.infer<typeof todoSchema>;

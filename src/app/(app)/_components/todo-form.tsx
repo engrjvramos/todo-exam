@@ -1,13 +1,14 @@
 'use client';
 
 import { useTodosContext } from '@/components/todo-context-provider';
+import { TUserTodoList } from '@/lib/types';
 import { startTransition, useState } from 'react';
 import { toast } from 'sonner';
 import AddTodo from './add-todo';
 import TodoItem from './todo-item';
 
 export default function TodoForm() {
-  const { todos, handleDeleteTodo } = useTodosContext();
+  const { todos, handleDeleteTodo, handleEditTodo } = useTodosContext();
   const [isAddTodo, setIsAddTodo] = useState(false);
 
   async function handleDelete(id: string) {
@@ -18,6 +19,47 @@ export default function TodoForm() {
       } catch (error) {
         const e = error as Error;
         toast.error(e.message || 'Failed to delete todo');
+      }
+    });
+  }
+
+  async function handleToggleField(
+    id: string,
+    todo: TUserTodoList,
+    field: 'isComplete',
+  ) {
+    startTransition(async () => {
+      try {
+        const updatedValue = !todo[field];
+        await handleEditTodo(id, { ...todo, [field]: updatedValue });
+
+        if (field === 'isComplete') {
+          toast.success(
+            todo.isComplete ? 'Task marked uncompleted' : 'Task completed',
+            {
+              action: {
+                label: 'Undo',
+
+                onClick: () => {
+                  startTransition(async () => {
+                    await handleEditTodo(id, {
+                      ...todo,
+                      [field]: !updatedValue,
+                    });
+                    toast.dismiss();
+                  });
+                },
+              },
+              classNames: {
+                actionButton: '!bg-transparent !text-blue-500',
+              },
+            },
+          );
+        }
+      } catch (error) {
+        const e = error as Error;
+
+        toast.error(e.message || 'Failed to edit todo');
       }
     });
   }
@@ -58,7 +100,12 @@ export default function TodoForm() {
         }}
       >
         {todos.map((todo) => (
-          <TodoItem key={todo.id} data={todo} handleDelete={handleDelete} />
+          <TodoItem
+            key={todo.id}
+            data={todo}
+            handleDelete={handleDelete}
+            handleToggleComplete={handleToggleField}
+          />
         ))}
       </ul>
     </div>

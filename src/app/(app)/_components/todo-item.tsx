@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { TUserTodoList } from '@/lib/types';
 import { Trash2Icon } from 'lucide-react';
 import EditTodo from './edit-todo';
@@ -6,18 +6,39 @@ import EditTodo from './edit-todo';
 type Props = {
   data: TUserTodoList;
   handleDelete: (id: TUserTodoList['id']) => Promise<void>;
+  handleToggleComplete: (
+    id: string,
+    todo: TUserTodoList,
+    field: 'isComplete',
+  ) => Promise<void>;
 };
-export default function TodoItem({ data, handleDelete }: Props) {
+export default function TodoItem({
+  data,
+  handleDelete,
+  handleToggleComplete,
+}: Props) {
   const { isComplete, todo, id } = data;
 
   return (
     <li
-      className="mb-4 flex w-full items-center overflow-hidden rounded-full border text-sm"
+      className="relative mb-4 flex w-full items-center rounded-full border text-sm"
       style={{
         height: '145px',
-        overflow: 'hidden',
       }}
     >
+      <Checkbox
+        className="checked:bg-custom-700 size-5 rounded-full checked:border-white"
+        checked={isComplete}
+        onCheckedChange={() => handleToggleComplete(id, data, 'isComplete')}
+        style={{
+          width: '40px',
+          height: '40px',
+          position: 'absolute',
+          left: '-15px',
+          backgroundColor: isComplete ? '#0a1f56' : '#D2C9CA',
+          border: isComplete ? '4px solid white' : '4px solid #B6A08B',
+        }}
+      />
       <div
         className="bg-custom-300 flex aspect-square items-center justify-center border-r border-gray-300 text-gray-300"
         style={{
@@ -25,6 +46,7 @@ export default function TodoItem({ data, handleDelete }: Props) {
           width: '145px',
           padding: '16px',
           backgroundColor: '#B6A08B',
+          borderRadius: '9999px 0 0 9999px',
         }}
       >
         <svg
@@ -54,8 +76,9 @@ export default function TodoItem({ data, handleDelete }: Props) {
         className="flex h-full w-full items-center justify-between"
         style={{
           paddingInline: '40px',
-          backgroundColor: '#D2C9CA',
+          backgroundColor: isComplete ? '#D4D8E5' : '#D2C9CA',
           height: '145px',
+          borderRadius: '0 9999px 9999px 0',
         }}
       >
         <span className={isComplete ? 'text-gray-500 line-through' : ''}>
@@ -63,9 +86,23 @@ export default function TodoItem({ data, handleDelete }: Props) {
         </span>
         <div className="flex items-center gap-2">
           <EditTodo initialValues={data} />
-          <Button size={'icon'} className="" onClick={() => handleDelete(id)}>
+          <button
+            content="rounded-full"
+            style={{
+              width: '40px',
+              height: '40px',
+              backgroundColor: '#9D8065',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '9999px',
+              color: 'white',
+            }}
+            className=""
+            onClick={() => handleDelete(id)}
+          >
             <Trash2Icon className="size-5" />
-          </Button>
+          </button>
         </div>
       </div>
     </li>

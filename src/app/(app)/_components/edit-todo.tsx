@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { todoSchema, TTodoSchema } from '@/lib/schema';
 import { TUserTodoList } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { EditIcon } from 'lucide-react';
 import { startTransition, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -36,6 +37,7 @@ export default function EditTodo({
     resolver: zodResolver(todoSchema),
     defaultValues: {
       todo: initialValues.todo,
+      isComplete: initialValues.isComplete,
     },
   });
 
@@ -62,8 +64,21 @@ export default function EditTodo({
 
   return (
     <Dialog>
-      <DialogTrigger>Edit</DialogTrigger>
-      <DialogContent className="gap-8">
+      <DialogTrigger
+        style={{
+          width: '40px',
+          height: '40px',
+          backgroundColor: '#9D8065',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '9999px',
+          color: 'white',
+        }}
+      >
+        <EditIcon className="size-5" />
+      </DialogTrigger>
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Edit Todo</DialogTitle>
           <DialogDescription className="">
